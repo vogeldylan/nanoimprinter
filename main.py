@@ -38,20 +38,20 @@ import PID
 
 def pid_setup_center(work_temp):
 
-    pid_center = PID.PID(0.1, 0, 1)
+    pid_center = PID.PID(1, 0, 1)
 
-    pid_center.setWindup(2)    # Not chosen for any particular reason
-    pid_center.setSampleTime(0.5)
+    pid_center.setWindup(5)    # Not chosen for any particular reason
+    pid_center.setSampleTime(0.1)
     pid_center.SetPoint = work_temp
 
     return pid_center
 
 def pid_setup_edge(work_temp):
 
-    pid_edge = PID.PID(0.1, 0, 1)
+    pid_edge = PID.PID(1, 0, 1)
 
-    pid_edge.setWindup(2)      # Not chosen for any particular reason
-    pid_edge.setSampleTime(0.5)
+    pid_edge.setWindup(5)      # Not chosen for any particular reason
+    pid_edge.setSampleTime(0.1)
     pid_edge.SetPoint = work_temp
 
     return pid_edge
@@ -145,7 +145,7 @@ if __name__ == "__main__":
             thm.close()
             heater.close()
 
-            
+
             coefficients_center = pid_edge.getPID()
             coefficients_edge = pid_center.getPID()
 
@@ -171,14 +171,19 @@ if __name__ == "__main__":
                 t_edge_avg =  heater.update_temp(t_edge_avg, t_edge)
 
                 pid_center.update(t_center_avg)
-                pwm_center += pid_center.output
-                pwm_center = heater.clamp(pwm_center, 0, 5)
+                pwm_center = pid_center.output
+                pwm_center = heater.clamp(pwm_center, 0, 20)
 
                 pid_edge.update(t_edge_avg)
-                pwm_edge += pid_edge.output
-                pwm_edge = heater.clamp(pwm_edge, 0, 5)
+                pwm_edge = pid_edge.output
+                pwm_edge = heater.clamp(pwm_edge, 0, 20)
 
                 heater.change_duty(pwm_center, pwm_edge)
+
+                if ((work_temp - t_center_avg) < 15):
+                    # Idea is to throttle the output as it nears the target temp. To maybe prevent overshoot.
+                    pwm_center.setKp(0.1)
+                    pwm_center.setKp(0.1)
 
         except KeyboardInterrupt:
             log.close()
@@ -187,7 +192,7 @@ if __name__ == "__main__":
 
             coefficients_center = pid_edge.getPID()
             coefficients_edge = pid_center.getPID()
-            
+
             log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
 
             sys.exit()

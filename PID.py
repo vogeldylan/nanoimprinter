@@ -93,8 +93,8 @@ class PID:
             # Remember last time and last error for next calculation
             self.last_time = self.current_time
             self.last_error = error
-            
-            print('P: ' + str(round(self.PTerm, 2)) + '\tI: ' + str(round((self.Ki * self.ITerm), 2)) + '\tD: ' + str(self.Kd * self.DTerm))
+
+            # print('P: ' + str(round(self.PTerm, 2)) + '\tI: ' + str(round((self.Ki * self.ITerm), 2)) + '\tD: ' + str(self.Kd * self.DTerm))
 
             self.output = self.PTerm + (self.Ki * self.ITerm) + (self.Kd * self.DTerm)
 
@@ -127,6 +127,6 @@ class PID:
         Based on a pre-determined sampe time, the PID decides if it should compute or return immediately.
         """
         self.sample_time = sample_time
-    
+
     def getPID(self):
 		return {"P": self.Kp, "I": self.Ki, "D": self.Kd}
