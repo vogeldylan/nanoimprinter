@@ -38,20 +38,20 @@ import PID
 
 def pid_setup_center(work_temp):
 
-    pid_center = PID.PID(0.08, 0, -6)
+    pid_center = PID.PID(0.1, 0, -0.5)
 
     pid_center.setWindup = 2    # Not chosen for any particular reason
-    pid_center.setSampleTime = 0.1
+    pid_center.setSampleTime = 0.5
     pid_center.SetPoint = work_temp
 
     return pid_center
 
 def pid_setup_edge(work_temp):
 
-    pid_edge = PID.PID(0.1, 0, -6)
+    pid_edge = PID.PID(0.1, 0, -0.5)
 
     pid_edge.setWindup = 2      # Not chosen for any particular reason
-    pid_edge.setSampleTime = 0.1
+    pid_edge.setSampleTime = 0.5
     pid_edge.SetPoint = work_temp
 
     return pid_edge
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     cent_temps = []
     edge_temps = []
 
-    pwm_center = 50    # Center
+    pwm_center = 55    # Center
     pwm_edge = 100    # Edge
 
     heater.change_duty(pwm_center, pwm_edge)
@@ -163,16 +163,16 @@ if __name__ == "__main__":
                 write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
 
             if ((time.time() - pid_start_t) > 15):
-                t_center_avg = heater.update_temp(t_center_avg, t_center)
-                t_edge_avg = heater.update_temp(t_edge_avg, t_edge)
+                t_center_avg =  t_center #heater.update_temp(t_center_avg, t_center)
+                t_edge_avg =  t_edge #heater.update_temp(t_edge_avg, t_edge)
 
                 pid_center.update(t_center_avg)
-                pwm_center = pid_center.output
-                pwm_center = heater.clamp(pwm_center, 0, 100)
+                pwm_center += pid_center.output
+                pwm_center = heater.clamp(pwm_center, 0, 5)
 
                 pid_edge.update(t_edge_avg)
-                pwm_edge = pid_edge.output
-                pwm_edge = heater.clamp(pwm_edge, 0, 100)
+                pwm_edge += pid_edge.output
+                pwm_edge = heater.clamp(pwm_edge, 0, 5)
 
                 heater.change_duty(pwm_center, pwm_edge)
 
