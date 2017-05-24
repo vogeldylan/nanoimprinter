@@ -68,9 +68,9 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge):
     now = datetime.datetime.now()
 
     pid_center_string = "center- [" + str(coefficients_center['P']) + "," + str(coefficients_center['I']) + "," + str(coefficients_center['D']) + "] "
-    pid_edge_string = "edge- [" + str(coefficients_edge['P']) + "," + str(coefficients_edge['I']) + "," + str(coefficients_edge['D']) + "]"
+    pid_edge_string = "edge- [" + str(coefficients_edge['P']) + "," + str(coefficients_edge['I']) + "," + str(coefficients_edge['D']) + "] "
     
-    plt.savefig(pid_center_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
+    plt.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
    
 def close():
     datafile.close()
