@@ -38,7 +38,7 @@ import PID
 
 def pid_setup_center(work_temp):
 
-    pid_center = PID.PID(0.1, 0, -3)
+    pid_center = PID.PID(0.08, 0, -6)
 
     pid_center.setWindup = 2    # Not chosen for any particular reason
     pid_center.setSampleTime = 0.1
@@ -48,7 +48,7 @@ def pid_setup_center(work_temp):
 
 def pid_setup_edge(work_temp):
 
-    pid_edge = PID.PID(0.2, 0, -3)
+    pid_edge = PID.PID(0.1, 0, -6)
 
     pid_edge.setWindup = 2      # Not chosen for any particular reason
     pid_edge.setSampleTime = 0.1
