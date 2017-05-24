@@ -5,13 +5,13 @@
     *   FILE NAME:      main.py
     *   AUTHOR:         Dylan Vogel
     *   PURPOSE:        This file contains the script used to run the nanoimprinting process.
-    *                   
+    *
     *
     *   EXTERNAL REFERENCES:    time, sys, dataLog, thmcouple, heater PID
     *
     *
-    *   NOTES:          
-    *                   
+    *   NOTES:
+    *
     *
     *   REVISION HISTORY:
     *
@@ -27,6 +27,7 @@
 # System functions
 import time
 import sys
+import datetime
 
 # User functions
 import dataLog as log
@@ -107,7 +108,7 @@ if __name__ == "__main__":
             if ((time.time() - curr_t) >= data_log_freq):
                 t_center = thm.read(1)
                 t_edge = thm.read(2)
-                
+
                 curr_t = time.time()
                 write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
 
@@ -157,7 +158,7 @@ if __name__ == "__main__":
             t_edge = thm.read(2)
 
             if ((time.time() - curr_t) >= data_log_freq):
-                
+
                 curr_t = time.time()
                 write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
 
@@ -180,6 +181,7 @@ if __name__ == "__main__":
             thm.close()
             heater.close()
 
-            log.createPlot(times, cent_temps, edge_temps, heat_time)
+            currDate = datetime.datetime.now().strfttime("%I:%M%p - %B %d - %Y")
+            log.createPlot(times, cent_temps, edge_temps, heat_time, currDate)
 
             sys.exit()
