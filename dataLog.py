@@ -61,13 +61,12 @@ def write(type, data, message):
         datafile.write(message + str(data) + '\n')
 
 def createPlot(x, y1, y2, heat_time):
-    currDate = datetime.datetime.now().strfttime("%I:%M%p - %B %d - %Y")
-    
     plt.plot(x, y1, 'r', x, y2, 'b')
     plt.ylabel('Temperature (C)')
     plt.xlabel('Time From Start (s)')
-    plt.title('Heating Characteristics for ' + str(heat_time) + 's Pulse and PID')
-    plt.savefig(plt.savefig(currDate + '-graph.pdf'))
+    plt.title('Heating Characteristics for ' + str(heat_time) + 's Pulse')
+    now = datetime.datetime.now()
+    plt.savefig(now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
 
 def close():
     datafile.close()
