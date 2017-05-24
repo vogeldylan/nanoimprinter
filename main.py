@@ -147,9 +147,9 @@ if __name__ == "__main__":
 
             
             coefficients_center = pid_edge.getPID()
-	         coefficients_edge = pid_center.getPID()
+	    coefficients_edge = pid_center.getPID()
             
-            log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
+	    log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
 
             sys.exit()
 
@@ -186,7 +186,7 @@ if __name__ == "__main__":
             heater.close()
 
             coefficients_center = pid_edge.getPID()
-	         coefficients_edge = pid_center.getPID()
+	    coefficients_edge = pid_center.getPID()
             
             log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
 
