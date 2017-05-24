@@ -66,7 +66,8 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge):
     plt.xlabel('Time From Start (s)')
     plt.title('Heating Characteristics for ' + str(heat_time) + 's Pulse')
     now = datetime.datetime.now()
-    plt.savefig(str(coefficients_center['P']) + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
+    pid_center_string = str(coefficients_center['P']) + "/" + str(coefficients_center['I']) + "/" + str(coefficients_center['D']) 
+    plt.savefig(pid_center_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
    
 def close():
     datafile.close()
