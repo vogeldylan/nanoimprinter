@@ -27,7 +27,7 @@
 # System functions
 import time
 import sys
-import datetime
+
 
 # User functions
 import dataLog as log
@@ -181,7 +181,7 @@ if __name__ == "__main__":
             thm.close()
             heater.close()
 
-            currDate = datetime.datetime.now().strfttime("%I:%M%p - %B %d - %Y")
-            log.createPlot(times, cent_temps, edge_temps, heat_time, currDate)
+            
+            log.createPlot(times, cent_temps, edge_temps, heat_time)
 
             sys.exit()

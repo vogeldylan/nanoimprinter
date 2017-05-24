@@ -22,6 +22,7 @@
 import os
 import time
 import matplotlib.pyplot as plt
+import datetime
 
 global datafile
 
@@ -59,7 +60,9 @@ def write(type, data, message):
     elif (type == 'LINE'):
         datafile.write(message + str(data) + '\n')
 
-def createPlot(x, y1, y2, heat_time, currDate):
+def createPlot(x, y1, y2, heat_time):
+    currDate = datetime.datetime.now().strfttime("%I:%M%p - %B %d - %Y")
+    
     plt.plot(x, y1, 'r', x, y2, 'b')
     plt.ylabel('Temperature (C)')
     plt.xlabel('Time From Start (s)')
