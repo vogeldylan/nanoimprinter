@@ -93,8 +93,8 @@ class PID:
             # Remember last time and last error for next calculation
             self.last_time = self.current_time
             self.last_error = error
-
-            print('P: ' + str(self.PTerm) + '\tI: ' + str(self.Ki * self.ITerm) + '\tD: ' + str(self.Kd * self.DTerm))
+            
+            print('P: ' + str(round(self.PTerm, 2)) + '\tI: ' + str(round((self.Ki * self.ITerm), 2)) + '\tD: ' + str(self.Kd * self.DTerm))
 
             self.output = self.PTerm + (self.Ki * self.ITerm) + (self.Kd * self.DTerm)
 

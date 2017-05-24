@@ -38,20 +38,20 @@ import PID
 
 def pid_setup_center(work_temp):
 
-    pid_center = PID.PID(0.1, 0, -0.5)
+    pid_center = PID.PID(0.1, 0, 1)
 
-    pid_center.setWindup = 2    # Not chosen for any particular reason
-    pid_center.setSampleTime = 1
+    pid_center.setWindup(2)    # Not chosen for any particular reason
+    pid_center.setSampleTime(0.5)
     pid_center.SetPoint = work_temp
 
     return pid_center
 
 def pid_setup_edge(work_temp):
 
-    pid_edge = PID.PID(0.1, 0, -0.5)
+    pid_edge = PID.PID(0.1, 0, 1)
 
-    pid_edge.setWindup = 2      # Not chosen for any particular reason
-    pid_edge.setSampleTime = 1
+    pid_edge.setWindup(2)      # Not chosen for any particular reason
+    pid_edge.setSampleTime(0.5)
     pid_edge.SetPoint = work_temp
 
     return pid_edge
@@ -98,7 +98,7 @@ if __name__ == "__main__":
     cent_temps = []
     edge_temps = []
 
-    pwm_center = 55    # Center
+    pwm_center = 60    # Center
     pwm_edge = 100    # Edge
 
     heater.change_duty(pwm_center, pwm_edge)
