@@ -41,7 +41,7 @@ def pid_setup_center(work_temp):
     pid_center = PID.PID(0.1, 0, -0.5)
 
     pid_center.setWindup = 2    # Not chosen for any particular reason
-    pid_center.setSampleTime = 0.5
+    pid_center.setSampleTime = 1
     pid_center.SetPoint = work_temp
 
     return pid_center
@@ -51,7 +51,7 @@ def pid_setup_edge(work_temp):
     pid_edge = PID.PID(0.1, 0, -0.5)
 
     pid_edge.setWindup = 2      # Not chosen for any particular reason
-    pid_edge.setSampleTime = 0.5
+    pid_edge.setSampleTime = 1
     pid_edge.SetPoint = work_temp
 
     return pid_edge
@@ -147,9 +147,9 @@ if __name__ == "__main__":
 
             
             coefficients_center = pid_edge.getPID()
-	    coefficients_edge = pid_center.getPID()
-            
-	    log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
+            coefficients_edge = pid_center.getPID()
+
+            log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
 
             sys.exit()
 
@@ -186,7 +186,7 @@ if __name__ == "__main__":
             heater.close()
 
             coefficients_center = pid_edge.getPID()
-	    coefficients_edge = pid_center.getPID()
+            coefficients_edge = pid_center.getPID()
             
             log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
 

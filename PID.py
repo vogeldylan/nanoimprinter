@@ -94,6 +94,8 @@ class PID:
             self.last_time = self.current_time
             self.last_error = error
 
+            print('P: ' + str(self.PTerm) + '\tI: ' + str(self.Ki * self.ITerm) + '\tD: ' + str(self.Kd * self.DTerm))
+
             self.output = self.PTerm + (self.Ki * self.ITerm) + (self.Kd * self.DTerm)
 
     def setKp(self, proportional_gain):
@@ -126,5 +128,5 @@ class PID:
         """
         self.sample_time = sample_time
     
-    def getPID(self)
+    def getPID(self):
 		return {"P": self.Kp, "I": self.Ki, "D": self.Kd}
