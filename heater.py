@@ -52,7 +52,7 @@ def initial_heating_time(temp1, temp2, work_temp):
     temp2 = thm.read(2)
     avg = (temp1 + temp2) / 2.0
 
-    heating_time = ((work_temp - avg) / 4.0) * 0.9
+    heating_time = ((work_temp - avg) / 4.0) * 0.8
 
     return heating_time
 
