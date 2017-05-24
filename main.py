@@ -167,8 +167,8 @@ if __name__ == "__main__":
                 write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
 
             if ((time.time() - pid_start_t) > 15):
-                t_center_avg =  t_center #heater.update_temp(t_center_avg, t_center)
-                t_edge_avg =  t_edge #heater.update_temp(t_edge_avg, t_edge)
+                t_center_avg =  heater.update_temp(t_center_avg, t_center)
+                t_edge_avg =  heater.update_temp(t_edge_avg, t_edge)
 
                 pid_center.update(t_center_avg)
                 pwm_center += pid_center.output
