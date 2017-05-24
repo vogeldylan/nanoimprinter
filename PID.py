@@ -125,3 +125,6 @@ class PID:
         Based on a pre-determined sampe time, the PID decides if it should compute or return immediately.
         """
         self.sample_time = sample_time
+    
+    def getPID(self)
+		return {"P": self.Kp, "I": self.Ki, "D": self.Kd}

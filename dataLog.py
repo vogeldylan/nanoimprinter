@@ -60,13 +60,14 @@ def write(type, data, message):
     elif (type == 'LINE'):
         datafile.write(message + str(data) + '\n')
 
-def createPlot(x, y1, y2, heat_time):
+def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge):
     plt.plot(x, y1, 'r', x, y2, 'b')
     plt.ylabel('Temperature (C)')
     plt.xlabel('Time From Start (s)')
     plt.title('Heating Characteristics for ' + str(heat_time) + 's Pulse')
     now = datetime.datetime.now()
-    plt.savefig(now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
-
+    pid_center_string = str(coefficients_center['P']) + "/" + str(coefficients_center['I']) + "/" + str(coefficients_center['D']) 
+    plt.savefig(pid_center_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
+   
 def close():
     datafile.close()
