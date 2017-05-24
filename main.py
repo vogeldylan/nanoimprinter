@@ -1,7 +1,25 @@
 #!/usr/bin/python
 
 '''
-Some scratch code written to compliment run_heating_plate_ver2.py
+    ************************************************************************
+    *   FILE NAME:      main.py
+    *   AUTHOR:         Dylan Vogel
+    *   PURPOSE:        This file contains the script used to run the nanoimprinting process.
+    *                   
+    *
+    *   EXTERNAL REFERENCES:    time, sys, dataLog, thmcouple, heater PID
+    *
+    *
+    *   NOTES:          
+    *                   
+    *
+    *   REVISION HISTORY:
+    *
+    *                   2017-05-22: Created file.
+    *                   2017-05-23: Added PWM scriping and functions related to PID controller.
+    *                   2017-05-24: Added waiting time after initial heating before PID controller
+    *                               activates. Adjusted PID settings based on trials.
+
 
 
 '''
@@ -9,7 +27,6 @@ Some scratch code written to compliment run_heating_plate_ver2.py
 # System functions
 import time
 import sys
-import matplotlib.pyplot as plt
 
 # User functions
 import dataLog as log
@@ -20,7 +37,7 @@ import PID
 
 def pid_setup_center(work_temp):
 
-    pid_center = PID.PID(0.2, 0, -1.5)
+    pid_center = PID.PID(0.1, 0, -3)
 
     pid_center.setWindup = 2    # Not chosen for any particular reason
     pid_center.setSampleTime = 0.1
@@ -30,7 +47,7 @@ def pid_setup_center(work_temp):
 
 def pid_setup_edge(work_temp):
 
-    pid_edge = PID.PID(0.8, 0, -1.5)
+    pid_edge = PID.PID(0.2, 0, -3)
 
     pid_edge.setWindup = 2      # Not chosen for any particular reason
     pid_edge.setSampleTime = 0.1
@@ -80,7 +97,7 @@ if __name__ == "__main__":
     cent_temps = []
     edge_temps = []
 
-    pwm_center = 45    # Center
+    pwm_center = 50    # Center
     pwm_edge = 100    # Edge
 
     heater.change_duty(pwm_center, pwm_edge)
@@ -144,12 +161,11 @@ if __name__ == "__main__":
                 curr_t = time.time()
                 write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
 
-            if ((time.time() - pid_start_t) > 20):
+            if ((time.time() - pid_start_t) > 15):
                 t_center_avg = heater.update_temp(t_center_avg, t_center)
                 t_edge_avg = heater.update_temp(t_edge_avg, t_edge)
 
                 pid_center.update(t_center_avg)
-                # 20 is a 'correction' I've chosen, where PWM of 20% should maintain temp. Unsure if this value is correct.
                 pwm_center = pid_center.output
                 pwm_center = heater.clamp(pwm_center, 0, 100)
 
