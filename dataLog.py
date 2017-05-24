@@ -2,7 +2,7 @@
 
     ************************************************************************
     *   FILE NAME:      dataLog.py
-    *   AUTHOR:         Dylan Vogel
+    *   AUTHORS:         Dylan Vogel, Peter Feng
     *   PURPOSE:        This file contains functions used for logging the results
     *                   of heater tests
     *
@@ -66,7 +66,10 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge):
     plt.xlabel('Time From Start (s)')
     plt.title('Heating Characteristics for ' + str(heat_time) + 's Pulse')
     now = datetime.datetime.now()
-    pid_center_string = str(coefficients_center['P']) + "-" + str(coefficients_center['I']) + "-" + str(coefficients_center['D']) 
+
+    pid_center_string = "center- [" + str(coefficients_center['P']) + "," + str(coefficients_center['I']) + "," + str(coefficients_center['D']) + "] "
+    pid_edge_string = "edge- [" + str(coefficients_edge['P']) + "," + str(coefficients_edge['I']) + "," + str(coefficients_edge['D']) + "]"
+    
     plt.savefig(pid_center_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
    
 def close():
