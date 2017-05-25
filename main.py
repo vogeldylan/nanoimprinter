@@ -48,7 +48,7 @@ import PID
 def pid_setup_center(work_temp):
 
     # Written as (Kp, Ki, Kd)
-    pid_center = PID.PID(1, 0, 1)
+    pid_center = PID.PID(1, 0, 2)
 
     # Windup to prevent integral term from going too high/low.
     pid_center.setWindup(5)
@@ -61,7 +61,7 @@ def pid_setup_center(work_temp):
 
 def pid_setup_edge(work_temp):
 
-    pid_edge = PID.PID(1, 0, 1)
+    pid_edge = PID.PID(0.8, 0, 2)
 
     pid_edge.setWindup(5)
     pid_edge.setSampleTime(1)

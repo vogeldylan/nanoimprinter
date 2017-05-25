@@ -61,10 +61,6 @@ def write(type, data, message):
         datafile.write(message + str(data) + '\n')
 
 def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge):
-    plt.plot(x, y1, 'r', x, y2, 'b')
-    plt.ylabel('Temperature (C)')
-    plt.xlabel('Time From Start (s)')
-    plt.title('Heating Characteristics for ' + str(heat_time) + 's Pulse')
    
     #getting the current time and date
     now = datetime.datetime.now()
@@ -72,6 +68,11 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge):
     #creating strings to describe the PID setup for the center and edge thermocouples
     pid_center_string = "center- [" + str(coefficients_center['P']) + "," + str(coefficients_center['I']) + "," + str(coefficients_center['D']) + "] "
     pid_edge_string = "edge- [" + str(coefficients_edge['P']) + "," + str(coefficients_edge['I']) + "," + str(coefficients_edge['D']) + "] "
+
+    plt.plot(x, y1, 'r', x, y2, 'b')
+    plt.ylabel('Temperature (C)')
+    plt.xlabel('Time From Start (s)')
+    plt.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
     
     #saving the figure with a formatted name that includes information about the PID setup and the time and date
     plt.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
