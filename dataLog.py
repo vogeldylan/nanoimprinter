@@ -89,7 +89,7 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     fig = plt.gcf()
     fig.set_size_inches(12, 10)
 
-    fig.draw()
+
     plt.plot(x, y1, 'r', x, y2, 'b')
     plt.ylabel('Temperature (C)')
     plt.xlabel('Time From Start (s)')
