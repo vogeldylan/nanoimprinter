@@ -29,7 +29,7 @@
 import RPi.GPIO as GPIO
 import thmcouple as thm
 
-global PWM_PIN_1, PWM_PIN_2, freq, pwm_1, pwm_2
+global PWM_PIN_1, PWM_PIN_2, freq
 
 # GPIO, not board pins on the RPi
 PWM_PIN_1 = 23      # Center
@@ -61,20 +61,6 @@ def setup2():
     pwm_2.start(0)      
       
     return pwm_2
-'''
-def setup():
-    global pwm_1, pwm_2
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(PWM_PIN_1, GPIO.OUT)
-    GPIO.setup(PWM_PIN_2, GPIO.OUT)
-
-    pwm_1 = GPIO.PWM(PWM_PIN_1, freq)
-    pwm_2 = GPIO.PWM(PWM_PIN_2, freq)
-
-    # Start both PWM channels at 0% duty cycle.
-    pwm_1.start(0)
-    pwm_2.start(0)
-'''
 
 def initial_heating_time(temp1, temp2, work_temp, thm_1, thm_2):
     # Apply some math to figure out how long to heat for.
@@ -94,7 +80,6 @@ def update_temp(temp_avg, temp):
     return new_temp
 
 def change_duty(duty_1, duty_2, pwm_1, pwm_2):
-    #global pwm_1, pwm_2
     pwm_1.ChangeDutyCycle(duty_1)
     pwm_2.ChangeDutyCycle(duty_2)
 
