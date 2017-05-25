@@ -88,7 +88,7 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     plt.figure(1)
     fig = plt.gcf()
     fig.set_size_inches(12, 10)
-    toolbar = plt.get_navigation_toolbar()
+
     fig.draw()
     plt.plot(x, y1, 'r', x, y2, 'b')
     plt.ylabel('Temperature (C)')
