@@ -81,6 +81,7 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     plt.ylabel('Temperature (C)')
     plt.xlabel('Time From Start (s)')
     plt.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
+    plt.figure(figsize = (10,10))
     
     #saving the figure with a formatted name that includes information about the PID setup and the time and date
     plt.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
