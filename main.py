@@ -25,6 +25,8 @@
     *                               of the target temp.
     *                               Moved most of the main script inside the try ... except statement for
     *                               consistent logging and proper script closure.
+    *                               Added an exception handler that catches non-KeyboardInterrupt exceptions, prints
+    *                               them to console, and safely exits the script.
 
 
 
@@ -98,7 +100,7 @@ if __name__ == "__main__":
     ''' DON'T EDIT THESE UNLESS YOU KNOW WHAT YOU'RE DOING '''
 
     log.setup("PID_cartridge_test")
-    
+
     thm1 = thm.setup1()
     thm2 = thm.setup2()
 
@@ -125,11 +127,11 @@ if __name__ == "__main__":
 
 
     print ("Setup completed, initial heating  ... ")
-    # Function stored in heater.py. Algorithm based on empirical results.
-    heat_time = heater.initial_heating_time(t_center, t_edge, work_temp, thm1, thm2)
-    heater.change_duty(pwm_center, pwm_edge)
 
     try:
+        # Function stored in heater.py. Algorithm based on empirical results.
+        heat_time = heater.initial_heating_time(t_center, t_edge, work_temp, thm1, thm2)
+        heater.change_duty(pwm_center, pwm_edge)
         # This is the initial heating.
         while ((time.time() - start_t) < heat_time):
             if ((time.time() - curr_t) >= data_log_freq):
