@@ -21,7 +21,6 @@
 import spidev
 
 global READBYTE
-global tc_1, tc_2
 
 READBYTE = [0x00, 0x00]
 
@@ -37,46 +36,8 @@ def setup2():
    tc_2.max_speed_hz = 5000000
    return tc_2
 
-'''
-def setup():
-    global tc_1, tc_2
-
-    tc_1 = spidev.SpiDev()
-    tc_2 = spidev.SpiDev()
-    tc_1.open(0,0)
-    tc_2.open(0,1)
-    tc_1.max_speed_hz = 5000000    # See MAX31855 datasheet
-    tc_2.max_speed_hz = 5000000;
-'''
-
-'''def read(thmcouple):
-    # Assume the input is either 1 or 2, and default to 1 if another value is entered.
-    if (thmcouple == 2):
-        rec = tc_2.xfer2(READBYTE)
-    else:
-        rec = tc_1.xfer2(READBYTE)
-
-    # Check the fault bit of the returned message
-    if rec[1] & 0x01:
-        fault = 1
-        #print "A fault was encountered by the MAX31855"
-    else:
-        fault = 0
-
-    # Convert the 16-bit returned number to the 14-bit temp value.
-    data = (rec[0] << 6) | (rec[1] >> 2)
-
-    # Check for negatives
-    if data >> 13:
-        temp = float((int(data) / 4.0) - 2048)
-    else:
-        temp = float(data / 4.0)
-
-    return temp'''
-
 def read(thmcouple):
-    # Assume the input is either 1 or 2, and default to 1 if another value is entered.
-         
+    # Assume the input is either 1 or 2, and default to 1 if another value is entered.         
     rec = thmcouple.xfer2(READBYTE)
 
     # Check the fault bit of the returned message
