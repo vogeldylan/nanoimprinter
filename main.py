@@ -55,7 +55,7 @@ def pid_setup_center(work_temp):
     pid_center = PID.PID(1, 0, 2)
 
     # Windup to prevent integral term from going too high/low.
-    pid_center.setWindup(5)
+    pid_center.setWindup(1)
 
     # Sample time, pretty self-explanatory.
     pid_center.setSampleTime(1)
@@ -67,7 +67,7 @@ def pid_setup_edge(work_temp):
 
     pid_edge = PID.PID(0.8, 0, 2)
 
-    pid_edge.setWindup(5)
+    pid_edge.setWindup(1)
     pid_edge.setSampleTime(1)
     pid_edge.SetPoint = work_temp
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     #limited_kp = 0.2
     limited_kp = heater.calc_kp(work_temp)
 
-    limited_kd = 0.1
+    limited_kd = -0.1
 
     # Time to wait after initial heating for temp to settle
     wait_time = 15
@@ -217,12 +217,14 @@ if __name__ == "__main__":
                 print("Kd center suppressed ... ")
                 log.write('LINE', 0, 'Kd center suppressed')
                 pid_center.setKd(limited_kd)
+                pid_center.setKi(-0.01)
                 limited[0][1] = True
 
             if ((limited[1][1] == False) and ((work_temp - t_edge_avg) < 1)):
                 print("Kd edge suppressed ... ")
                 log.write('LINE', 0, 'Kd edge suppressed')
                 pid_edge.setKd(limited_kd)
+                pid_edge.setKi(-0.01)
                 limited[1][1] = True
 
 

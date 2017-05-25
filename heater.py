@@ -75,7 +75,7 @@ def initial_heating_time(temp1, temp2, work_temp, thm_1, thm_2):
 
 def calc_kp(work_temp):
 
-    kp = 0.2 * ((work_temp / 100) * (work_temp / 100))
+    kp = 0.2 * ((work_temp / 100.0) * (work_temp / 100.0))
     kp = clamp(kp, 0.2, 1)
 
     return kp
