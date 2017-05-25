@@ -94,6 +94,8 @@ if __name__ == "__main__":
     # Used to suppress Kp as it approaches the setpoint.
     limited_kp = 0.1
 
+    limited_kd = 0.1
+
     # Time to wait after initial heating for temp to settle
     wait_time = 15
 
@@ -171,7 +173,7 @@ if __name__ == "__main__":
         log.write('LINE', round((time.time() - start_t), 2), 'PID Controller started at: ')
 
         working = True
-        limited = [False, False]
+        limited = [[False, False], [False, False]]
 
         while working:
             t_center_last = t_center
@@ -198,15 +200,29 @@ if __name__ == "__main__":
             heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
 
             # Suppress Kp once the current temp nears the working temp.
-            if ((limited[0] == False) and ((work_temp - t_center_avg) < 10)):
+            if ((limited[0][0] == False) and ((work_temp - t_center_avg) < 10)):
                 print("Kp center suppressed ... ")
+                log.write('LINE', 0, 'Kp center suppressed')
                 pid_center.setKp(limited_kp)
-                limited[0] = True
+                limited[0][0] = True
 
-            if ((limited[1] == False) and ((work_temp - t_edge_avg) < 10)):
+            if ((limited[1][0] == False) and ((work_temp - t_edge_avg) < 10)):
                 print("Kp edge suppressed ... ")
+                log.write('LINE', 0, 'Kp edge suppressed')
                 pid_edge.setKp(limited_kp)
-                limited[1] = True
+                limited[1][0] = True
+
+            if ((limited[0][1] == False) and ((work_temp - t_center_avg) < 1)):
+                print("Kd center suppressed ... ")
+                log.write('LINE', 0, 'Kd center suppressed')
+                pid_center.setKd(limited_kd)
+                limited[0][1] = True
+
+            if ((limited[1][1] == False) and ((work_temp - t_edge_avg) < 1)):
+                print("Kd edge suppressed ... ")
+                log.write('LINE', 0, 'Kd edge suppressed')
+                pid_edge.setKd(limited_kd)
+                limited[1][1] = True
 
 
 
