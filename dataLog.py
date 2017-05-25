@@ -75,6 +75,17 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge):
     
     #saving the figure with a formatted name that includes information about the PID setup and the time and date
     plt.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
+
+def write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times):
+
+    d_time = round((curr_t - start_t), 2)
+
+    times.append(d_time)
+    cent_temps.append(t_center)
+    edge_temps.append(t_edge)
+
+    write('COL', [d_time, t_center, t_edge, pwm_center, pwm_edge], ['Time: ','Temp_1: ', 'Temp_2: ', 'Duty_center: ', 'Duty_edge: '])
+    print('Time: ' + str(d_time) + '\t' + 'Temp_1: ' + str(t_center) + '\t' + 'Temp_2: ' + str(t_edge) + '\t' + 'Duty_center: ' + str(pwm_center) +  '\t' + 'Duty_edge: ' + str(pwm_edge))
    
 def close():
     datafile.close()
