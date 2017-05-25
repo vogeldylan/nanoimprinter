@@ -169,7 +169,7 @@ if __name__ == "__main__":
         log.write('LINE', round((time.time() - start_t), 2), 'PID Controller started at: ')
 
         working = True
-        limited = False
+        limited = [False, False]
 
         while working:
             t_center_last = t_center
@@ -196,11 +196,15 @@ if __name__ == "__main__":
             heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
 
             # Suppress Kp once the current temp nears the working temp.
-            if ((limited == False) and (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15)):
-                print("Kp suppressed ... ")
+            if ((limited[0] == False) and ((work_temp - t_center_avg) < 10)):
+                print("Kp center suppressed ... ")
                 pid_center.setKp(limited_kp)
+                limited[0] = True
+                
+            if ((limited[1] == False) and ((work_temp - t_edge_avg) < 10)):
+                print("Kp edge suppressed ... ")
                 pid_edge.setKp(limited_kp)
-                limited = True
+                limited[1] = True
 
 
 
