@@ -102,7 +102,6 @@ if __name__ == "__main__":
     thm1 = thm.setup1()
     thm2 = thm.setup2()
 
-    heater.setup()
     pid_edge = pid_setup_edge(work_temp)
     pid_center = pid_setup_center(work_temp)
 
@@ -193,7 +192,7 @@ if __name__ == "__main__":
             # Suppress Kp once the current temp nears the working temp.
             if ((limited == False) and (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15)):
                 print("Kp suppressed ... ")
-                pid_center.setKp(limited_kp*2)
+                pid_center.setKp(limited_kp*1.5)
                 pid_edge.setKp(limited_kp)
                 limited = True
 
