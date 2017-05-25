@@ -188,8 +188,8 @@ if __name__ == "__main__":
             # Suppress Kp once the current temp nears the working temp.
             if ((limited == False) and (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15)):
                 print("Kp suppressed ... ")
-                pwm_center.setKp(limited_kp)
-                pwm_center.setKp(limited_kp)
+                pid_center.setKp(limited_kp)
+                pid_edge.setKp(limited_kp)
                 limited = True
 
 
