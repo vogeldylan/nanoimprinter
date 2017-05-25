@@ -27,6 +27,7 @@
     *                               consistent logging and proper script closure.
     *                               Added an exception handler that catches non-KeyboardInterrupt exceptions, prints
     *                               them to console, and safely exits the script.
+    *                               Changed the clamping mechanism to work on the edge and center elements separately.
 
 
 
@@ -106,14 +107,14 @@ if __name__ == "__main__":
 
     pwm_1 = heater.setup1()
     pwm_2 = heater.setup2()
-    
+
     pid_edge = pid_setup_edge(work_temp)
     pid_center = pid_setup_center(work_temp)
-    
+
     pid_edge_val = pid_edge.getPID()
     pid_center_val = pid_center.getPID()
-    # These variables will have current temp values written to them.
 
+    # These variables will have current temp values written to them.
     t_center = thm.read(thm1)
     t_edge = thm.read(thm2)
 
@@ -170,7 +171,7 @@ if __name__ == "__main__":
         log.write('LINE', round((time.time() - start_t), 2), 'PID Controller started at: ')
 
         working = True
-        limited = False
+        limited = [False, False]
 
         while working:
             t_center_last = t_center
@@ -197,16 +198,19 @@ if __name__ == "__main__":
             heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
 
             # Suppress Kp once the current temp nears the working temp.
-            if ((limited == False) and (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15)):
-                print("Kp suppressed ... ")
-                
-                pid_center.setKp(limited_kp*1.5)
+            if ((limited[0] == False) and ((work_temp - t_center_avg) < 10)):
+                print("Kp center suppressed ... ")
+                pid_center.setKp(limited_kp)
+                limited[0] = True
+
+            if ((limited[1] == False) and ((work_temp - t_edge_avg) < 10)):
+                print("Kp edge suppressed ... ")
                 pid_edge.setKp(limited_kp)
-                limited = True
+                limited[1] = True
 
 
 
-    
+
     except KeyboardInterrupt:
         log.close()
         thm.close(thm1)
