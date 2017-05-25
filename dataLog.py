@@ -24,6 +24,13 @@ import time
 import matplotlib.pyplot as plt
 import datetime
 
+#
+import gtk
+from matplotlib.figure import Figure
+from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
+from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
+#
+
 global datafile
 
 
@@ -76,13 +83,18 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
    
     pid_center_string = "center - [" + original_center_string + "," + new_center_string + "]" 
     pid_edge_string = "edge - [" + original_edge_string + "," + new_edge_string + "]"
-      
+
+    
+    plt.figure(1)
+    fig = plt.gcf()
+    fig.set_size_inches(12, 10)
+    toolbar = fig.get_navigation_toolbar()
+    fig.draw()
     plt.plot(x, y1, 'r', x, y2, 'b')
     plt.ylabel('Temperature (C)')
     plt.xlabel('Time From Start (s)')
     plt.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
-    plt.figure(figsize = (10,10))
-    
+        
     #saving the figure with a formatted name that includes information about the PID setup and the time and date
     plt.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
 
