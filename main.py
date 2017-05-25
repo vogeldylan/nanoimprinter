@@ -92,7 +92,7 @@ if __name__ == "__main__":
     pwm_edge = 100
 
     # Used to suppress Kp as it approaches the setpoint.
-    limited_kp = 0.1
+    limited_kp = 0.2
 
     limited_kd = 0.1
 
