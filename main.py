@@ -46,7 +46,7 @@ import heater
 import PID
 
 ################################################################################
-''' EDIT THESE, THESE ARE THE PID COEFFICIENTS '''
+''' EDIT THESE; THESE ARE THE PID COEFFICIENTS '''
 
 
 def pid_setup_center(work_temp):
@@ -92,7 +92,8 @@ if __name__ == "__main__":
     pwm_edge = 100
 
     # Used to suppress Kp as it approaches the setpoint.
-    limited_kp = 0.2
+    #limited_kp = 0.2
+    limited_kp = heater.calc_kp(work_temp)
 
     limited_kd = 0.1
 
@@ -191,11 +192,11 @@ if __name__ == "__main__":
 
             pid_center.update(t_center_avg)
             pwm_center = pid_center.output
-            pwm_center = heater.clamp(pwm_center, 0, 20)
+            pwm_center = heater.clamp(pwm_center, 0, 50)
 
             pid_edge.update(t_edge_avg)
             pwm_edge = pid_edge.output
-            pwm_edge = heater.clamp(pwm_edge, 0, 20)
+            pwm_edge = heater.clamp(pwm_edge, 0, 50)
 
             heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
 

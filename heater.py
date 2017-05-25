@@ -39,27 +39,27 @@ PWM_PIN_2 = 24      # Edge
 freq = 500
 
 def setup1():
-   
+
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PWM_PIN_1, GPIO.OUT)
 
     pwm_1 = GPIO.PWM(PWM_PIN_1, freq)
-      
+
     # Start both PWM channels at 0% duty cycle.
     pwm_1.start(0)
-    
+
     return pwm_1
-     
+
 def setup2():
-   
+
     GPIO.setmode(GPIO.BCM)
     GPIO.setup(PWM_PIN_2, GPIO.OUT)
 
     pwm_2 = GPIO.PWM(PWM_PIN_2, freq)
-      
+
     # Start both PWM channels at 0% duty cycle.
-    pwm_2.start(0)      
-      
+    pwm_2.start(0)
+
     return pwm_2
 
 def initial_heating_time(temp1, temp2, work_temp, thm_1, thm_2):
@@ -69,9 +69,16 @@ def initial_heating_time(temp1, temp2, work_temp, thm_1, thm_2):
     temp2 = thm.read(thm_2)
     avg = (temp1 + temp2) / 2.0
 
-    heating_time = ((work_temp - avg) / 4.0) * 0.8
+    heating_time = ((work_temp - avg) / 4.0) - 4
 
     return heating_time
+
+def calc_kp(work_temp):
+
+    kp = 0.2 * ((work_temp / 100) * (work_temp / 100))
+    kp = clamp(kp, 0.2, 1)
+
+    return kp
 
 def update_temp(temp_avg, temp):
     # Simple weighting scheme to smooth out large variations.
