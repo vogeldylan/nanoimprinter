@@ -83,15 +83,17 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     plt.xlabel('Time From Start (s)')
     plt.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
     '''
+    plt.figure(1)
     fig = plt.gcf()
-    fig.plot(x, y1, 'r', x, y2, 'b')
-    fig.ylabel('Temperature (C)')
-    fig.xlabel('Time From Start (s)')
-    fig.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
     fig.set_size_inches(12, 10)
+    plt.plot(x, y1, 'r', x, y2, 'b')
+    plt.ylabel('Temperature (C)')
+    plt.xlabel('Time From Start (s)')
+    plt.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
+    
     
     #saving the figure with a formatted name that includes information about the PID setup and the time and date
-    fig.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
+    plt.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
 
 def write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times):
 
