@@ -192,7 +192,7 @@ if __name__ == "__main__":
                 heater.change_duty(pwm_center, pwm_edge)
 
                 # Suppress Kp once the current temp nears the working temp.
-                if ((limited == False) && (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15):
+                if ((limited == False) && (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15)):
                     pwm_center.setKp(limited_kp)
                     pwm_center.setKp(limited_kp)
                     limited = True
