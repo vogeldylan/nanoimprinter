@@ -25,10 +25,12 @@ import matplotlib.pyplot as plt
 import datetime
 
 #
+'''
 import gtk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_gtkagg import FigureCanvasGTKAgg as FigureCanvas
 from matplotlib.backends.backend_gtkagg import NavigationToolbar2GTKAgg as NavigationToolbar
+'''
 #
 
 global datafile
@@ -88,8 +90,7 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     plt.figure(1)
     fig = plt.gcf()
     fig.set_size_inches(12, 10)
-
-
+   
     plt.plot(x, y1, 'r', x, y2, 'b')
     plt.ylabel('Temperature (C)')
     plt.xlabel('Time From Start (s)')
