@@ -197,9 +197,6 @@ if __name__ == "__main__":
                 pid_edge.setKp(limited_kp)
                 limited = True
 
-
-
-    '''
     except KeyboardInterrupt:
         log.close()
         thm.close(thm1)
@@ -211,12 +208,18 @@ if __name__ == "__main__":
 
         log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
 
-        sys.exit()'''
+        sys.exit()
 
     except:
         traceback.print_exc()
         log.close()
-        thm.close()
+        thm.close(thm1)
+        thm.close(thm2)
         heater.close()
 
         sys.exit()
+
+    
+    
+
+    
