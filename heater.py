@@ -2,19 +2,25 @@
 
     ************************************************************************
     *   FILE NAME:      heater.py
-    *   AUTHOR:         Dylan Vogel
+    *   AUTHOR:         Dylan Vogel, Peter Feng
     *   PURPOSE:        This file contains functions for heater control using PWM.
     *
     *
     *   EXTERNAL REFERENCES:    RPi.GPIO, thmcouple
     *
     *
-    *   NOTES:           None.
+    *   NOTES:          The only function you'll likely need to change is the constants
+    *                   in initial_heating_time based on the thermal mass you're trying to heat.
     *
+    *                   You could base these on calculations which take into account your input
+    *                   wattage, thermal volume, convection, etc., but I find that it's easier to run
+    *                   a characterization test and adjust based on that.
     *
     *   REVISION HISTORY:
     *
-    *                   2017-05-22: Created file.
+    *                   2017-05-22: Created file. Wrote basic functions.
+    *                   2017-05-23: Wrote initial_heating_time based on empirically
+    *                               derived values for our setup.
     *
 
 '''
