@@ -102,7 +102,10 @@ if __name__ == "__main__":
     thm1 = thm.setup1()
     thm2 = thm.setup2()
 
-    heater.setup()
+    #heater.setup()
+    pwm_1 = heater.setup1()
+    pwm_2 = heater.setup2()
+   
     pid_edge = pid_setup_edge(work_temp)
     pid_center = pid_setup_center(work_temp)
 
@@ -127,7 +130,7 @@ if __name__ == "__main__":
     print ("Setup completed, initial heating  ... ")
     # Function stored in heater.py. Algorithm based on empirical results.
     heat_time = heater.initial_heating_time(t_center, t_edge, work_temp, thm1, thm2)
-    heater.change_duty(pwm_center, pwm_edge)
+    heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
 
     try:
         # This is the initial heating.
@@ -142,7 +145,7 @@ if __name__ == "__main__":
         # Update PWM values to zero.
         pwm_center = 0
         pwm_edge = 0
-        heater.change_duty(pwm_center, pwm_edge)
+        heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
 
 
         print('Initial heating finished...')
@@ -188,7 +191,7 @@ if __name__ == "__main__":
             pwm_edge = pid_edge.output
             pwm_edge = heater.clamp(pwm_edge, 0, 20)
 
-            heater.change_duty(pwm_center, pwm_edge)
+            heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
 
             # Suppress Kp once the current temp nears the working temp.
             if ((limited == False) and (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15)):
@@ -197,6 +200,9 @@ if __name__ == "__main__":
                 pid_edge.setKp(limited_kp)
                 limited = True
 
+
+
+    '''
     except KeyboardInterrupt:
         log.close()
         thm.close(thm1)
@@ -208,18 +214,13 @@ if __name__ == "__main__":
 
         log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
 
-        sys.exit()
+        sys.exit()'''
 
     except:
         traceback.print_exc()
         log.close()
-        thm.close(thm1)
-        thm.close(thm2)
-        heater.close()
+        thm.close()
+        heater.close(pwm_1)
+        heater.close(pwm_2)
 
         sys.exit()
-
-    
-    
-
-    
