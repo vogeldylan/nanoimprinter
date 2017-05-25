@@ -49,23 +49,23 @@ import PID
 def pid_setup_center(work_temp):
 
     # Written as (Kp, Ki, Kd)
-    pid_center = PID.PID(1, 0, 0.75)
+    pid_center = PID.PID(1, 0, 1)
 
     # Windup to prevent integral term from going too high/low.
     pid_center.setWindup(5)
 
     # Sample time, pretty self-explanatory.
-    pid_center.setSampleTime(1)
+    pid_center.setSampleTime(0.5)
     pid_center.SetPoint = work_temp
 
     return pid_center
 
 def pid_setup_edge(work_temp):
 
-    pid_edge = PID.PID(0.8, 0, 0.75)
+    pid_edge = PID.PID(0.8, 0, 1)
 
     pid_edge.setWindup(5)
-    pid_edge.setSampleTime(1)
+    pid_edge.setSampleTime(0.5)
     pid_edge.SetPoint = work_temp
 
     return pid_edge
@@ -193,7 +193,7 @@ if __name__ == "__main__":
             # Suppress Kp once the current temp nears the working temp.
             if ((limited == False) and (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15)):
                 print("Kp suppressed ... ")
-                pid_center.setKp(limited_kp)
+                pid_center.setKp(limited_kp*2)
                 pid_edge.setKp(limited_kp)
                 limited = True
 
