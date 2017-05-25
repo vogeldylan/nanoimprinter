@@ -25,6 +25,8 @@
     *                               of the target temp.
     *                               Moved most of the main script inside the try ... except statement for
     *                               consistent logging and proper script closure.
+    *                               Added an exception handler that catches non-KeyboardInterrupt exceptions, prints
+    *                               them to console, and safely exits the script.
 
 
 
@@ -49,23 +51,23 @@ import PID
 def pid_setup_center(work_temp):
 
     # Written as (Kp, Ki, Kd)
-    pid_center = PID.PID(1, 0, 1)
+    pid_center = PID.PID(1, 0, 2)
 
     # Windup to prevent integral term from going too high/low.
     pid_center.setWindup(5)
 
     # Sample time, pretty self-explanatory.
-    pid_center.setSampleTime(0.5)
+    pid_center.setSampleTime(1)
     pid_center.SetPoint = work_temp
 
     return pid_center
 
 def pid_setup_edge(work_temp):
 
-    pid_edge = PID.PID(0.8, 0, 1)
+    pid_edge = PID.PID(0.8, 0, 2)
 
     pid_edge.setWindup(5)
-    pid_edge.setSampleTime(0.5)
+    pid_edge.setSampleTime(1)
     pid_edge.SetPoint = work_temp
 
     return pid_edge
@@ -98,13 +100,18 @@ if __name__ == "__main__":
     ''' DON'T EDIT THESE UNLESS YOU KNOW WHAT YOU'RE DOING '''
 
     log.setup("PID_cartridge_test")
-    
+
     thm1 = thm.setup1()
     thm2 = thm.setup2()
 
+    pwm_1 = heater.setup1()
+    pwm_2 = heater.setup2()
+    
     pid_edge = pid_setup_edge(work_temp)
     pid_center = pid_setup_center(work_temp)
-
+    
+    pid_edge_val = pid_edge.getPID()
+    pid_center_val = pid_center.getPID()
     # These variables will have current temp values written to them.
 
     t_center = thm.read(thm1)
@@ -124,11 +131,11 @@ if __name__ == "__main__":
 
 
     print ("Setup completed, initial heating  ... ")
-    # Function stored in heater.py. Algorithm based on empirical results.
-    heat_time = heater.initial_heating_time(t_center, t_edge, work_temp, thm1, thm2)
-    heater.change_duty(pwm_center, pwm_edge)
 
     try:
+        # Function stored in heater.py. Algorithm based on empirical results.
+        heat_time = heater.initial_heating_time(t_center, t_edge, work_temp, thm1, thm2)
+        heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
         # This is the initial heating.
         while ((time.time() - start_t) < heat_time):
             if ((time.time() - curr_t) >= data_log_freq):
@@ -141,7 +148,7 @@ if __name__ == "__main__":
         # Update PWM values to zero.
         pwm_center = 0
         pwm_edge = 0
-        heater.change_duty(pwm_center, pwm_edge)
+        heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
 
 
         print('Initial heating finished...')
@@ -187,20 +194,25 @@ if __name__ == "__main__":
             pwm_edge = pid_edge.output
             pwm_edge = heater.clamp(pwm_edge, 0, 20)
 
-            heater.change_duty(pwm_center, pwm_edge)
+            heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
 
             # Suppress Kp once the current temp nears the working temp.
             if ((limited == False) and (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15)):
                 print("Kp suppressed ... ")
+                
                 pid_center.setKp(limited_kp*1.5)
                 pid_edge.setKp(limited_kp)
                 limited = True
 
+
+
+    
     except KeyboardInterrupt:
         log.close()
         thm.close(thm1)
         thm.close(thm2)
-        heater.close()
+        heater.close(pwm_1)
+        heater.close(pwm_2)
 
         coefficients_center = pid_edge.getPID()
         coefficients_edge = pid_center.getPID()
@@ -214,11 +226,7 @@ if __name__ == "__main__":
         log.close()
         thm.close(thm1)
         thm.close(thm2)
-        heater.close()
+        heater.close(pwm_1)
+        heater.close(pwm_2)
 
         sys.exit()
-
-    
-    
-
-    
