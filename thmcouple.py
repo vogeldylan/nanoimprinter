@@ -97,6 +97,5 @@ def read(thmcouple):
 
     return temp
 
-def close():
-    tc_1.close()
-    tc_2.close()
+def close(thmcouple):
+    thmcouple.close()

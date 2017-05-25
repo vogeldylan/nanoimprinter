@@ -51,11 +51,11 @@ def setup():
     pwm_1.start(0)
     pwm_2.start(0)
 
-def initial_heating_time(temp1, temp2, work_temp):
+def initial_heating_time(temp1, temp2, work_temp, thm_1, thm_2):
     # Apply some math to figure out how long to heat for.
 
-    temp1 = thm.read(1)
-    temp2 = thm.read(2)
+    temp1 = thm.read(thm_1)
+    temp2 = thm.read(thm_2)
     avg = (temp1 + temp2) / 2.0
 
     heating_time = ((work_temp - avg) / 4.0) * 0.8
