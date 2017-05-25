@@ -218,8 +218,8 @@ if __name__ == "__main__":
         heater.close(pwm_1)
         heater.close(pwm_2)
 
-        coefficients_center = pid_edge.getPID()
-        coefficients_edge = pid_center.getPID()
+        coefficients_center = pid_center.getPID()
+        coefficients_edge = pid_edge.getPID()
 
         log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge, pid_center_val, pid_edge_val)
 
