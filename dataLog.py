@@ -60,15 +60,23 @@ def write(type, data, message):
     elif (type == 'LINE'):
         datafile.write(message + str(data) + '\n')
 
-def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge):
+def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, original_center_values, original_edge_values):
    
     #getting the current time and date
     now = datetime.datetime.now()
     
     #creating strings to describe the PID setup for the center and edge thermocouples
-    pid_center_string = "center- [" + str(coefficients_center['P']) + "," + str(coefficients_center['I']) + "," + str(coefficients_center['D']) + "] "
-    pid_edge_string = "edge- [" + str(coefficients_edge['P']) + "," + str(coefficients_edge['I']) + "," + str(coefficients_edge['D']) + "] "
+    #pid_center_string = "center- [" + str(coefficients_center['P']) + "," + str(coefficients_center['I']) + "," + str(coefficients_center['D']) + "] "
+    #pid_edge_string = "edge- [" + str(coefficients_edge['P']) + "," + str(coefficients_edge['I']) + "," + str(coefficients_edge['D']) + "] "
 
+    original_center_string = "(" + str(original_center_values['P']) + "," + str(original_center_values['I']) + "," + str(original_center_values['D']) + ")"
+    new_center_string = "(" + str(coefficients_center['P']) + "," + str(coefficients_center['I']) + "," + str(coefficients_center['D']) + ")"
+    original_edge_string = "(" + str(original_edge_values['P']) + "," + str(original_edge_values['I']) + "," + str(original_edge_values['D']) + ")"
+    new_edge_string = "(" + str(coefficients_edge['P']) + "," + str(coefficients_edge['I']) + "," + str(coefficients_edge['D']) + ")"
+   
+    pid_center_string = "center - [" + original_center_string + "," + new_center_string + "]" 
+    pid_edge_string = "edge - [" + original_edge_string + "," + new_edge_string + "]"
+      
     plt.plot(x, y1, 'r', x, y2, 'b')
     plt.ylabel('Temperature (C)')
     plt.xlabel('Time From Start (s)')
@@ -84,7 +92,7 @@ def write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, c
     times.append(d_time)
     cent_temps.append(t_center)
     edge_temps.append(t_edge)
-
+   
     write('COL', [d_time, t_center, t_edge, round(pwm_center, 3), round(pwm_edge, 3)], ['Time: ','Temp_1: ', 'Temp_2: ', 'Duty_center: ', 'Duty_edge: '])
     print('Time: ' + str(d_time) + '\t' + 'Temp_1: ' + str(t_center) + '\t' + 'Temp_2: ' + str(t_edge) + '\t' + 'Duty_center: ' + str(round(pwm_center, 3)) +  '\t' + 'Duty_edge: ' + str(round(pwm_edge, 3)))
    
