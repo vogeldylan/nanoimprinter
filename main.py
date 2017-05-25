@@ -98,8 +98,7 @@ if __name__ == "__main__":
     ''' DON'T EDIT THESE UNLESS YOU KNOW WHAT YOU'RE DOING '''
 
     log.setup("PID_cartridge_test")
-
-    #thm.setup()
+    
     thm1 = thm.setup1()
     thm2 = thm.setup2()
 
@@ -108,8 +107,6 @@ if __name__ == "__main__":
     pid_center = pid_setup_center(work_temp)
 
     # These variables will have current temp values written to them.
-    #t_center = thm.read(1)
-    #t_edge = thm.read(2)
 
     t_center = thm.read(thm1)
     t_edge = thm.read(thm2)
@@ -136,8 +133,6 @@ if __name__ == "__main__":
         # This is the initial heating.
         while ((time.time() - start_t) < heat_time):
             if ((time.time() - curr_t) >= data_log_freq):
-                #t_center = thm.read(1)
-                #t_edge = thm.read(2)
                 t_center = thm.read(thm1)
                 t_edge = thm.read(thm2)
 
@@ -158,8 +153,6 @@ if __name__ == "__main__":
         # Wait for the temperature to settle.
         while ((time.time() - pid_start_t) < wait_time):
             if ((time.time() - curr_t) >= data_log_freq):
-                #t_center = thm.read(1)
-                #t_edge = thm.read(2)
                 t_center = thm.read(thm1)
                 t_edge = thm.read(thm2)
 
@@ -176,9 +169,6 @@ if __name__ == "__main__":
         while working:
             t_center_last = t_center
             t_edge_last = t_edge
-
-            #t_center = thm.read(1)
-            #t_edge = thm.read(2)
             t_center = thm.read(thm1)
             t_edge = thm.read(thm2)
 
