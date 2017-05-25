@@ -49,7 +49,7 @@ import PID
 def pid_setup_center(work_temp):
 
     # Written as (Kp, Ki, Kd)
-    pid_center = PID.PID(1, 0, 1)
+    pid_center = PID.PID(1, 0, 2)
 
     # Windup to prevent integral term from going too high/low.
     pid_center.setWindup(5)
@@ -62,7 +62,7 @@ def pid_setup_center(work_temp):
 
 def pid_setup_edge(work_temp):
 
-    pid_edge = PID.PID(1, 0, 1)
+    pid_edge = PID.PID(0.8, 0, 2)
 
     pid_edge.setWindup(5)
     pid_edge.setSampleTime(1)
@@ -73,8 +73,8 @@ def pid_setup_edge(work_temp):
 
 if __name__ == "__main__":
 
-################################################################################
-''' EDIT THESE SETUP VARIABLES '''
+    ################################################################################
+    ''' EDIT THESE SETUP VARIABLES '''
 
     work_temp = input('Enter a working temperature between 0-200 C: ')
     #heat_time = input('Enter bonding time in seconds 0-3600s: ')
@@ -94,18 +94,25 @@ if __name__ == "__main__":
     # Time to wait after initial heating for temp to settle
     wait_time = 15
 
-################################################################################
-''' DON'T EDIT THESE UNLESS YOU KNOW WHAT YOU'RE DOING '''
+    ################################################################################
+    ''' DON'T EDIT THESE UNLESS YOU KNOW WHAT YOU'RE DOING '''
 
     log.setup("PID_cartridge_test")
-    thm.setup()
+
+    #thm.setup()
+    thm1 = thm.setup1()
+    thm2 = thm.setup2()
+
     heater.setup()
     pid_edge = pid_setup_edge(work_temp)
     pid_center = pid_setup_center(work_temp)
 
     # These variables will have current temp values written to them.
-    t_center = thm.read(1)
-    t_edge = thm.read(2)
+    #t_center = thm.read(1)
+    #t_edge = thm.read(2)
+
+    t_center = thm.read(thm1)
+    t_edge = thm.read(thm2)
 
     # These variables store the temperature averaged over the last two values.
     t_center_avg = t_center
@@ -119,29 +126,29 @@ if __name__ == "__main__":
     cent_temps = []
     edge_temps = []
 
-################################################################################
 
     print ("Setup completed, initial heating  ... ")
     # Function stored in heater.py. Algorithm based on empirical results.
-    heat_time = heater.initial_heating_time(t_center, t_edge, work_temp)
+    heat_time = heater.initial_heating_time(t_center, t_edge, work_temp, thm1, thm2)
     heater.change_duty(pwm_center, pwm_edge)
 
     try:
         # This is the initial heating.
         while ((time.time() - start_t) < heat_time):
             if ((time.time() - curr_t) >= data_log_freq):
-                t_center = thm.read(1)
-                t_edge = thm.read(2)
+                #t_center = thm.read(1)
+                #t_edge = thm.read(2)
+                t_center = thm.read(thm1)
+                t_edge = thm.read(thm2)
 
                 curr_t = time.time()
-                write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
+                log.write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
 
         # Update PWM values to zero.
         pwm_center = 0
         pwm_edge = 0
         heater.change_duty(pwm_center, pwm_edge)
 
-################################################################################
 
         print('Initial heating finished...')
         log.write('LINE', round((time.time() - start_t), 2), 'Initial heating finished at: ')
@@ -150,15 +157,15 @@ if __name__ == "__main__":
 
         # Wait for the temperature to settle.
         while ((time.time() - pid_start_t) < wait_time):
-            try:
-                if ((time.time() - curr_t) >= data_log_freq):
-                    t_center = thm.read(1)
-                    t_edge = thm.read(2)
+            if ((time.time() - curr_t) >= data_log_freq):
+                #t_center = thm.read(1)
+                #t_edge = thm.read(2)
+                t_center = thm.read(thm1)
+                t_edge = thm.read(thm2)
 
-                    curr_t = time.time()
-                    write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
+                curr_t = time.time()
+                log.write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
 
-################################################################################
 
         print('PID controller started ...')
         log.write('LINE', round((time.time() - start_t), 2), 'PID Controller started at: ')
@@ -167,41 +174,46 @@ if __name__ == "__main__":
         limited = False
 
         while working:
-            try:
-                t_center_last = t_center
-                t_edge_last = t_edge
+            t_center_last = t_center
+            t_edge_last = t_edge
 
-                t_center = thm.read(1)
-                t_edge = thm.read(2)
+            #t_center = thm.read(1)
+            #t_edge = thm.read(2)
+            t_center = thm.read(thm1)
+            t_edge = thm.read(thm2)
 
-                if ((time.time() - curr_t) >= data_log_freq):
+            if ((time.time() - curr_t) >= data_log_freq):
 
-                    curr_t = time.time()
-                    write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
+                curr_t = time.time()
+                log.write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times)
 
-                t_center_avg =  (t_center + t_center_last) / 2.0
-                t_edge_avg =  (t_edge + t_edge_last) / 2.0
+            t_center_avg =  (t_center + t_center_last) / 2.0
+            t_edge_avg =  (t_edge + t_edge_last) / 2.0
 
-                pid_center.update(t_center_avg)
-                pwm_center = pid_center.output
-                pwm_center = heater.clamp(pwm_center, 0, 20)
+            pid_center.update(t_center_avg)
+            pwm_center = pid_center.output
+            pwm_center = heater.clamp(pwm_center, 0, 20)
 
-                pid_edge.update(t_edge_avg)
-                pwm_edge = pid_edge.output
-                pwm_edge = heater.clamp(pwm_edge, 0, 20)
+            pid_edge.update(t_edge_avg)
+            pwm_edge = pid_edge.output
+            pwm_edge = heater.clamp(pwm_edge, 0, 20)
 
-                heater.change_duty(pwm_center, pwm_edge)
+            heater.change_duty(pwm_center, pwm_edge)
 
-                # Suppress Kp once the current temp nears the working temp.
-                if ((limited == False) && (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15)):
-                    pwm_center.setKp(limited_kp)
-                    pwm_center.setKp(limited_kp)
-                    limited = True
+            # Suppress Kp once the current temp nears the working temp.
+            if ((limited == False) and (work_temp - ((t_center_avg + t_edge_avg) / 2.0) < 15)):
+                print("Kp suppressed ... ")
+                pid_center.setKp(limited_kp)
+                pid_edge.setKp(limited_kp)
+                limited = True
 
 
-    '''except KeyboardInterrupt:
+
+    '''
+    except KeyboardInterrupt:
         log.close()
-        thm.close()
+        thm.close(thm1)
+        thm.close(thm2)
         heater.close()
 
         coefficients_center = pid_edge.getPID()
@@ -218,14 +230,3 @@ if __name__ == "__main__":
         heater.close()
 
         sys.exit()
-
-def write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times):
-
-    d_time = round((curr_t - start_t), 2)
-
-    times.append(d_time)
-    cent_temps.append(t_center)
-    edge_temps.append(t_edge)
-
-    log.write('COL', [d_time, t_center, t_edge, pwm_center, pwm_edge], ['Time: ','Temp_1: ', 'Temp_2: ', 'Duty_center: ', 'Duty_edge: '])
-    print('Time: ' + str(d_time) + '\t' + 'Temp_1: ' + str(t_center) + '\t' + 'Temp_2: ' + str(t_edge) + '\t' + 'Duty_center: ' + str(pwm_center) +  '\t' + 'Duty_edge: ' + str(pwm_edge))
