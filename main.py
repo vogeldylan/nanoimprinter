@@ -33,6 +33,7 @@
 # System functions
 import time
 import sys
+import traceback
 
 
 # User functions
@@ -198,18 +199,25 @@ if __name__ == "__main__":
                     limited = True
 
 
-    except KeyboardInterrupt:
-            log.close()
-            thm.close()
-            heater.close()
+    '''except KeyboardInterrupt:
+        log.close()
+        thm.close()
+        heater.close()
 
-            coefficients_center = pid_edge.getPID()
-            coefficients_edge = pid_center.getPID()
+        coefficients_center = pid_edge.getPID()
+        coefficients_edge = pid_center.getPID()
 
-            log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
+        log.createPlot(times, cent_temps, edge_temps, heat_time, coefficients_center, coefficients_edge)
 
-            sys.exit()
+        sys.exit()'''
 
+    except:
+        traceback.print_exc()
+        log.close()
+        thm.close()
+        heater.close()
+
+        sys.exit()
 
 def write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times):
 
