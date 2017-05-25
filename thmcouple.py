@@ -21,15 +21,16 @@
 import spidev
 
 global READBYTE
-
 READBYTE = [0x00, 0x00]
 
+#Set up 1st thermocouple
 def setup1():
    tc_1 = spidev.SpiDev()
    tc_1.open(0,0)
    tc_1.max_speed_hz = 5000000
    return tc_1
 
+#Set up 2nd thermocouple
 def setup2():
    tc_2 = spidev.SpiDev()
    tc_2.open(0,1)
