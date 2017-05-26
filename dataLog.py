@@ -117,9 +117,9 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     fig = Figure(figsize=(5,4), dpi=100)
     ax = fig.add_subplot(111)
     ax.plot(x, y1, 'r', x, y2, 'b')
-    ax.ylabel('Temperature (C)')
-    ax.xlabel('Time From Start (s)')
-    ax.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
+    #ax.ylabel('Temperature (C)')
+    #ax.xlabel('Time From Start (s)')
+    #ax.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
     canvas = FigureCanvas(fig)  # a gtk.DrawingArea
     vbox.pack_start(canvas)
     toolbar = NavigationToolbar(canvas, win)
