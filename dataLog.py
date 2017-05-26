@@ -97,37 +97,24 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     plt.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
     '''
      
-    fig2 = plt.figure()
-    fig2.set_size_inches(12, 10)
+    #the original pdf that will be saved as a pdf
+    fig_original = plt.figure()
+    fig_original.set_size_inches(12, 10)
 
     plt.plot(x, y1, 'r', x, y2, 'b')
     plt.ylabel('Temperature (C)')
     plt.xlabel('Time From Start (s)')
     plt.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
  
-   
+
     win = gtk.Window()
     win.connect("destroy", lambda x: gtk.main_quit())
     win.set_default_size(400,300)
-    win.set_title("Heating Graph")
+    win.set_title(pid_center_string + pid_edge_string)
 
     vbox = gtk.VBox()
     win.add(vbox)
-    ''' 
-    fig = Figure(figsize=(5,4), dpi=100)
-    ax = fig.add_subplot(111)
-    ax.plot(x, y1, 'r', x, y2, 'b')
-    #ax.ylabel('Temperature (C)')
-    #ax.xlabel('Time From Start (s)')
-    #ax.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
-    canvas = FigureCanvas(fig)  # a gtk.DrawingArea
-    vbox.pack_start(canvas)
-    toolbar = NavigationToolbar(canvas, win)
-    vbox.pack_start(toolbar, False, False)
 
-    win.show_all()
-    gtk.main()
-    '''
     fig = Figure(figsize=(5,4), dpi=100)
     ax = fig.add_subplot(1,1,1)
     ax.plot(x, y1, 'r', x, y2, 'b')
@@ -144,8 +131,9 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     gtk.main()
       
     #saving the figure with a formatted name that includes information about the PID setup and the time and date
-    fig2.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
+    fig_original.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
 
+      
 def write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times):
 
     d_time = round((curr_t - start_t), 2)
