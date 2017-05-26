@@ -58,7 +58,7 @@ def pid_setup_center(work_temp):
     pid_center.setWindup(1)
 
     # Sample time, pretty self-explanatory.
-    pid_center.setSampleTime(1)
+    pid_center.setSampleTime(0.5)
     pid_center.SetPoint = work_temp
 
     return pid_center
@@ -68,7 +68,7 @@ def pid_setup_edge(work_temp):
     pid_edge = PID.PID(0.8, 0, 2)
 
     pid_edge.setWindup(1)
-    pid_edge.setSampleTime(1)
+    pid_edge.setSampleTime(0.5)
     pid_edge.SetPoint = work_temp
 
     return pid_edge
@@ -92,13 +92,12 @@ if __name__ == "__main__":
     pwm_edge = 100
 
     # Used to suppress Kp as it approaches the setpoint.
-    #limited_kp = 0.2
-    limited_kp = heater.calc_kp(work_temp)
+    limited_kp =  0.4 #heater.calc_kp(work_temp)
 
-    limited_kd = -0.1
+    limited_kd = -0.2
 
     # Time to wait after initial heating for temp to settle
-    wait_time = 15
+    wait_time = 10
 
     ################################################################################
     ''' DON'T EDIT THESE UNLESS YOU KNOW WHAT YOU'RE DOING '''
@@ -217,14 +216,12 @@ if __name__ == "__main__":
                 print("Kd center suppressed ... ")
                 log.write('LINE', 0, 'Kd center suppressed')
                 pid_center.setKd(limited_kd)
-                pid_center.setKi(-0.01)
                 limited[0][1] = True
 
             if ((limited[1][1] == False) and ((work_temp - t_edge_avg) < 1)):
                 print("Kd edge suppressed ... ")
                 log.write('LINE', 0, 'Kd edge suppressed')
                 pid_edge.setKd(limited_kd)
-                pid_edge.setKi(-0.01)
                 limited[1][1] = True
 
 
