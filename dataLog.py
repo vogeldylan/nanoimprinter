@@ -96,15 +96,15 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     plt.xlabel('Time From Start (s)')
     plt.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
     '''
-    '''  
-    fig = plt.figure()
-    fig.set_size_inches(12, 10)
+     
+    fig2 = plt.figure()
+    fig2.set_size_inches(12, 10)
 
     plt.plot(x, y1, 'r', x, y2, 'b')
     plt.ylabel('Temperature (C)')
     plt.xlabel('Time From Start (s)')
     plt.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
-    '''
+ 
    
     win = gtk.Window()
     win.connect("destroy", lambda x: gtk.main_quit())
@@ -128,7 +128,7 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     win.show_all()
     gtk.main()
     '''
-    fig = Figure(figsize=(5,4), dpi=200)
+    fig = Figure(figsize=(5,4), dpi=100)
     ax = fig.add_subplot(1,1,1)
     ax.plot(x, y1, 'r', x, y2, 'b')
     ax.set_xlabel('Time From Start (s)')
@@ -144,7 +144,7 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     gtk.main()
       
     #saving the figure with a formatted name that includes information about the PID setup and the time and date
-    fig.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
+    fig2.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
 
 def write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times):
 
