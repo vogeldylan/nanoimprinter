@@ -129,4 +129,5 @@ class PID:
         self.sample_time = sample_time
 
     def getPID(self):
-		return {"P": self.Kp, "I": self.Ki, "D": self.Kd}
+	#return the Kp, Ki, and Kd values in a dictionary 
+	return {"P": self.Kp, "I": self.Ki, "D": self.Kd}
