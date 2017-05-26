@@ -110,7 +110,7 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     win = gtk.Window()
     win.connect("destroy", lambda x: gtk.main_quit())
     #win.set_default_size(400,300)
-    win.fullscreen()
+    win.maximize()
     win.set_title(pid_center_string + pid_edge_string)
 
     vbox = gtk.VBox()
@@ -121,7 +121,6 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     ax.plot(x, y1, 'r', x, y2, 'b')
     ax.set_xlabel('Time From Start (s)')
     ax.set_ylabel('Temperature (C)')
-    ax.set_ylim([0,200])
     ax.set_title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
 
     canvas = FigureCanvas(fig)  # a gtk.DrawingArea
