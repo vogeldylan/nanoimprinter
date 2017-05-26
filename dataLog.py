@@ -130,7 +130,7 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
     '''
     fig = Figure(figsize=(5,4), dpi=100)
     #ax = fig.add_subplot(111)
-    plt.figure(1) 
+    plt.figure(1) = fig
     plt.plot(x, y1, 'r', x, y2, 'b')
     #ax.ylabel('Temperature (C)')
     #ax.xlabel('Time From Start (s)')
