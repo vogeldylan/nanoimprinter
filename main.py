@@ -52,7 +52,7 @@ import PID
 def pid_setup_center(work_temp):
 
     # Written as (Kp, Ki, Kd)
-    pid_center = PID.PID(1, 0, 2)
+    pid_center = PID.PID(4, 0, 2)
 
     # Windup to prevent integral term from going too high/low.
     pid_center.setWindup(1)
@@ -65,7 +65,7 @@ def pid_setup_center(work_temp):
 
 def pid_setup_edge(work_temp):
 
-    pid_edge = PID.PID(0.8, 0, 2)
+    pid_edge = PID.PID(12, 0, 2)
 
     pid_edge.setWindup(1)
     pid_edge.setSampleTime(0.5)
@@ -88,16 +88,16 @@ if __name__ == "__main__":
     # The PWM duty used for the initial heating. Generally around 50% for the
     # center and 100% for the edge seems to work. Should be adjusted based on
     # changes to the thermal volume based on empirical results.
-    pwm_center = 60
+    pwm_center = 40
     pwm_edge = 100
 
     # Used to suppress Kp as it approaches the setpoint.
-    limited_kp =  0.4 #heater.calc_kp(work_temp)
+    limited_kp =  1 #heater.calc_kp(work_temp)
 
     limited_kd = -0.2
 
     # Time to wait after initial heating for temp to settle
-    wait_time = 10
+    wait_time = 30
 
     ################################################################################
     ''' DON'T EDIT THESE UNLESS YOU KNOW WHAT YOU'RE DOING '''
@@ -191,22 +191,22 @@ if __name__ == "__main__":
 
             pid_center.update(t_center_avg)
             pwm_center = pid_center.output
-            pwm_center = heater.clamp(pwm_center, 0, 50)
+            pwm_center = heater.clamp(pwm_center, 0, 100)
 
             pid_edge.update(t_edge_avg)
             pwm_edge = pid_edge.output
-            pwm_edge = heater.clamp(pwm_edge, 0, 50)
+            pwm_edge = heater.clamp(pwm_edge, 0, 100)
 
             heater.change_duty(pwm_center, pwm_edge, pwm_1, pwm_2)
 
             # Suppress Kp once the current temp nears the working temp.
-            if ((limited[0][0] == False) and ((work_temp - t_center_avg) < 10)):
+            if ((limited[0][0] == False) and ((work_temp - t_center_avg) < 15)):
                 print("Kp center suppressed ... ")
                 log.write('LINE', 0, 'Kp center suppressed')
                 pid_center.setKp(limited_kp)
                 limited[0][0] = True
 
-            if ((limited[1][0] == False) and ((work_temp - t_edge_avg) < 10)):
+            if ((limited[1][0] == False) and ((work_temp - t_edge_avg) < 15)):
                 print("Kp edge suppressed ... ")
                 log.write('LINE', 0, 'Kp edge suppressed')
                 pid_edge.setKp(limited_kp)
