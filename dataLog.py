@@ -113,7 +113,7 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
 
     vbox = gtk.VBox()
     win.add(vbox)
-
+    ''' 
     fig = Figure(figsize=(5,4), dpi=100)
     ax = fig.add_subplot(111)
     ax.plot(x, y1, 'r', x, y2, 'b')
@@ -127,9 +127,23 @@ def createPlot(x, y1, y2, heat_time, coefficients_center, coefficients_edge, ori
 
     win.show_all()
     gtk.main()
+    '''
+    fig = Figure(figsize=(5,4), dpi=100)
+    #ax = fig.add_subplot(111)
+    fig.plot(x, y1, 'r', x, y2, 'b')
+    #ax.ylabel('Temperature (C)')
+    #ax.xlabel('Time From Start (s)')
+    #ax.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
+    canvas = FigureCanvas(fig)  # a gtk.DrawingArea
+    vbox.pack_start(canvas)
+    toolbar = NavigationToolbar(canvas, win)
+    vbox.pack_start(toolbar, False, False)
+
+    win.show_all()
+    gtk.main()
       
     #saving the figure with a formatted name that includes information about the PID setup and the time and date
-    ax.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
+    fig.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
 
 def write_line_to_log(t_center, t_edge, pwm_center, pwm_edge, curr_t, start_t, cent_temps, edge_temps, times):
 
