@@ -22,6 +22,7 @@
 
 import RPi.GPIO as GPIO
 import subprocess
+import time
 
 GPIO.setmode(GPIO.BCM) # use GPIO numbering
 GPIO.setwarnings(False)
@@ -39,10 +40,11 @@ def main():
         GPIO.wait_for_edge(INT, GPIO.FALLING)
         # we got here because the button was pressed.
         # wait for 3 seconds to see if this was deliberate
-        sleep(3)
+        time.sleep(5)
         # check the button level again
         if GPIO.input(INT) == 0:
             # still pressed, is a serious request, shutdown Pi
+            time.sleep(3)
             subprocess.call(['poweroff'], shell=True, \
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
