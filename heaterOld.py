@@ -25,9 +25,10 @@
 
 '''
 
+
 import RPi.GPIO as GPIO
 import thmcouple as thm
-import heatingProcess
+
 global PWM_PIN_1, PWM_PIN_2, freq
 
 # GPIO, not board pins on the RPi
@@ -61,26 +62,14 @@ def setup2():
 
     return pwm_2
 
-def initial_heating_time(process):
+def initial_heating_time(temp1, temp2, work_temp, thm_1, thm_2):
     # Apply some math to figure out how long to heat for.
 
-    temp1 = thm.read(process.thm1)
-    temp2 = thm.read(process.thm2)
+    temp1 = thm.read(thm_1)
+    temp2 = thm.read(thm_2)
     avg = (temp1 + temp2) / 2.0
 
-    heating_time = ((process.temp - avg) / 2.0) - 4
-
-    return heating_time
-
-def initial_heating_time_new(process):
-    # Revised method to determine the initial heating time
-
-    temp1 = thm.read(process.thm1)
-    temp2 = thm.read(process.thm2)
-    avg = (temp1 + temp2) / 2.0
-
-    temp_diff = process.temp - avg
-    heating_time = (process.heat_capacity * process.mass * temp_diff / process.watt) - 10
+    heating_time = ((work_temp - avg) / 2.0) - 4
 
     return heating_time
 
@@ -93,12 +82,13 @@ def calc_kp(work_temp):
 
 def update_temp(temp_avg, temp):
     # Simple weighting scheme to smooth out large variations.
+
     new_temp = ((temp_avg * 2.0) + temp) / 3.0
     return new_temp
 
-def change_duty(process):
-    process.pwm_1.ChangeDutyCycle(process.pwm_center)
-    process.pwm_2.ChangeDutyCycle(process.pwm_edge)
+def change_duty(duty_1, duty_2, pwm_1, pwm_2):
+    pwm_1.ChangeDutyCycle(duty_1)
+    pwm_2.ChangeDutyCycle(duty_2)
 
 def clamp(n, minn, maxn):
     return max(min(n, maxn), minn)

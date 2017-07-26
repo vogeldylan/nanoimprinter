@@ -38,7 +38,7 @@ def setup2():
    return tc_2
 
 def read(thmcouple):
-    # Assume the input is either 1 or 2, and default to 1 if another value is entered.         
+    # Assume the input is either 1 or 2, and default to 1 if another value is entered.
     rec = thmcouple.xfer2(READBYTE)
 
     # Check the fault bit of the returned message
