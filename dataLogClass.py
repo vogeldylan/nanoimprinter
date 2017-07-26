@@ -243,7 +243,9 @@ class dataLog:
         fig_original = plt.figure()
         fig_original.set_size_inches(12, 10)
 
-        plt.plot(window.process.times, window.process.cent_temps, 'r', window.process.times, window.process.edge_temps, 'b')
+        plt.plot(window.process.times, window.process.cent_temps, 'r', label = 'Center Temp')
+        plt.plot(window.process.times, window.process.edge_temps, 'b', label = 'Edge Temp')
+        plt.legend(loc='lower left', shadow=True)
         plt.ylabel('Temperature (°C)')
         plt.xlabel('Time From Start (s)')
         plt.title('Temperature Measurements Over Time ')
