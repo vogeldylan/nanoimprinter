@@ -135,7 +135,7 @@ class dataLog:
         #Create graph for the temperature mode
 
         #Get current time and date
-        now = datetime.datetime.now()
+        #now = datetime.datetime.now()
 
         #Setup the figure and the canvas for the graph
         window.graphWidget.figure = plt.figure()
@@ -162,6 +162,7 @@ class dataLog:
         window.graphWidget.canvas.draw()
         window.update()
 
+        '''
         # the original pdf that will be saved as a pdf
         fig_original = plt.figure()
         fig_original.set_size_inches(12, 10)
@@ -173,7 +174,7 @@ class dataLog:
 
         # saving the figure with a formatted name that includes information about the PID setup and the time and date
         fig_original.savefig(now.strftime("%I:%M%p - %B %d - %Y") + '-temperature graph.pdf')
-
+        '''
     def updatePlot(self, window):
         #Refresh the graph
         window.graphWidget.ax.clear()
@@ -211,6 +212,29 @@ class dataLog:
         window.graphWidget.canvas.draw()
         window.update()
 
+    def savePlot(self, window):
+        now = datetime.datetime.now()
+
+        # the original pdf that will be saved as a pdf
+        fig_original = plt.figure()
+        fig_original.set_size_inches(12, 10)
+
+        target_temps = []
+        for i in range(0, len(window.process.times)):
+            target_temps.append(float(window.process.temp))
+
+        plt.plot(window.process.times, window.process.cent_temps, 'r', label = 'Center Temp')
+        plt.plot(window.process.times, window.process.edge_temps, 'b', label = 'Edge Temp')
+        plt.plot(window.process.times, window.process.target_temps, 'g', label = 'Target Temp')
+        plt.legend(loc='lower left', shadow = True)
+        plt.ylabel('Temperature (°C)')
+        plt.xlabel('Time From Start (s)')
+        plt.title('Temperature Measurements Over Time ')
+
+
+
+        # saving the figure with a formatted name that includes information about the PID setup and the time and date
+        fig_original.savefig(now.strftime("%I:%M%p - %B %d - %Y") + '-temperature graph.pdf')
 
     def savePlotTemp(self, window):
         #Save the graph as a PDF

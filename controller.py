@@ -13,7 +13,7 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__()
         uic.loadUi('heaterGUInewtest.ui', self)
         self.setUp()
-        self.process = heatingProcess.heatingProcess()
+        #self.process = heatingProcess.heatingProcess()
         self.val = 0
 
     def setUp(self):
@@ -78,6 +78,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
                 # change
                 try:
+                    #change
+                    self.process = heatingProcess.heatingProcess()
                     self.process.setup()
                     # Function stored in heater.py. Algorithm based on empirical results.
                     self.process.heat_time = heater.initial_heating_time(self.process)
@@ -146,7 +148,7 @@ class MainWindow(QtWidgets.QMainWindow):
                             self.process.curr_t = time.time()
                             self.process.dataLog.write_line_to_log(self)
 
-                            self.process.dataLog.updatePlot(self)
+                            self.process.updatePlot(self)
 
                         self.process.t_center_avg = (self.process.t_center + self.process.t_center_last) / 2.0
                         self.process.t_edge_avg = (self.process.t_edge + self.process.t_edge_last) / 2.0
@@ -283,7 +285,7 @@ class MainWindow(QtWidgets.QMainWindow):
             thm.close(self.process.thm2)
             self.generateMessageBox("REMINDER", "The process has finished. Please ENSURE that EVERYTHING has been TURNED OFF.")
 
-            self.process.dataLog.createPlotTemp(self)
+            self.process.dataLog.savePlotTemp(self)
 
             self.process.dataLog.close()
 
@@ -444,7 +446,7 @@ class MainWindow(QtWidgets.QMainWindow):
     def isTextNumber(self, input):
         #Check whether the input is an integer or not
         try:
-            int(input)
+            float(input)
             return True
         except ValueError:
             return False
