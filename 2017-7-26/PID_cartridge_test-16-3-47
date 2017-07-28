@@ -1,0 +1,36 @@
+Time: 2.13	Temp_1: 25.25	Temp_2: 26.5	Duty_center: 20	Duty_edge: 100	
+Initial heating finished at: 2.94
+Time: 3.13	Temp_1: 25.25	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+Time: 4.13	Temp_1: 25.25	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 5.13	Temp_1: 25.0	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 6.13	Temp_1: 25.25	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 7.13	Temp_1: 25.25	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 8.13	Temp_1: 25.25	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 9.13	Temp_1: 25.25	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 10.13	Temp_1: 25.25	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 11.13	Temp_1: 25.25	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 12.13	Temp_1: 25.5	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 13.13	Temp_1: 25.5	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 14.13	Temp_1: 25.5	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 15.13	Temp_1: 25.5	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 16.13	Temp_1: 25.75	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+Time: 17.13	Temp_1: 25.75	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 18.13	Temp_1: 25.75	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 19.13	Temp_1: 25.75	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 20.13	Temp_1: 26.0	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 21.13	Temp_1: 26.0	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 22.13	Temp_1: 26.0	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 23.13	Temp_1: 26.0	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+Time: 24.13	Temp_1: 26.0	Temp_2: 26.5	Duty_center: 0	Duty_edge: 0	
+Time: 25.13	Temp_1: 26.0	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+Time: 26.13	Temp_1: 26.25	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+Time: 27.13	Temp_1: 26.25	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+Time: 28.13	Temp_1: 26.25	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+Time: 29.13	Temp_1: 26.25	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+Time: 30.13	Temp_1: 26.5	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+Time: 31.13	Temp_1: 26.5	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+Time: 32.13	Temp_1: 26.5	Temp_2: 26.75	Duty_center: 0	Duty_edge: 0	
+PID Controller started at: 33.02
+Kp center suppressed0
+Kp edge suppressed0
+Time: 33.13	Temp_1: 26.5	Temp_2: 27.0	Duty_center: 13.5	Duty_edge: 13.25	
