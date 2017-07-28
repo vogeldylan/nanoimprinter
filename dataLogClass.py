@@ -1,22 +1,9 @@
 '''
-
-    ************************************************************************
-    *   FILE NAME:      dataLog.py
-    *   AUTHORS:        Peter Feng, Dylan Vogel
-    *   PURPOSE:        This file contains functions used for logging the results
-    *                   of heater tests
-    *
-    *   EXTERNAL REFERENCES:    os, time
-    *
-    *
-    *   NOTES:          None.
-    *
-    *
-    *   REVISION HISTORY:
-    *
-    *                   2017-05-22: Created file.
-    *                   2017-05-23: Wrote a function for creating plots.
-
+    ********************************************************************************************************************
+    *   FILE NAME:      dataLogClass.py
+    *   AUTHOR:         Yu Dong (Peter) Feng, Dylan Vogel
+    *   PURPOSE:        This file contains the dataLog class, which is used for creating & updating data files and graphs
+    ********************************************************************************************************************
 '''
 
 import os
@@ -118,17 +105,6 @@ class dataLog:
         window.graphWidget.canvas.draw()
         window.update()
 
-        #The original pdf that will be saved as a pdf
-        fig_original = plt.figure()
-        fig_original.set_size_inches(12, 10)
-
-        plt.plot(window.process.times, window.process.cent_temps, 'r', window.process.times, window.process.edge_temps, 'b')
-        plt.ylabel('Temperature (°C)')
-        plt.xlabel('Time From Start (s)')
-        plt.title('Heating Characteristics for ' + pid_center_string + ' ' + pid_edge_string)
-
-        # saving the figure with a formatted name that includes information about the PID setup and the time and date
-        fig_original.savefig(pid_center_string + pid_edge_string + now.strftime("%I:%M%p - %B %d - %Y") + '-graph.pdf')
 
 
     def createPlotTemp(self, window):
@@ -188,7 +164,8 @@ class dataLog:
         window.graphWidget.ax.plot(window.process.times, target_temps, 'y', label = 'Target Temp')
         window.graphWidget.ax.set_xlabel('Time From Start (s)')
         window.graphWidget.ax.set_ylabel('Temperature (°C)')
-        window.graphWidget.ax.set_title('Temperature Measurements Over Time ')
+        window.graphWidget.ax.set_title('Temperature Measurements Over Time For Heating Test ')
+        window.graphWidget.ax.set_ylim([0, float(window.process.temp) + 30])
         window.graphWidget.ax.legend(loc='lower left', shadow = True)
 
         #Refresh the canvas
@@ -234,7 +211,7 @@ class dataLog:
 
 
         # saving the figure with a formatted name that includes information about the PID setup and the time and date
-        fig_original.savefig(now.strftime("%I:%M%p - %B %d - %Y") + '-temperature graph.pdf')
+        fig_original.savefig(now.strftime("%I:%M%p - %B %d - %Y") + '-heater graph.pdf')
 
     def savePlotTemp(self, window):
         #Save the graph as a PDF
@@ -265,17 +242,7 @@ class dataLog:
         self.write('COL', [d_time, window.process.t_center, window.process.t_edge, round(window.process.pwm_center, 3), round(window.process.pwm_edge, 3)],
               ['Time: ', 'Temp_1: ', 'Temp_2: ', 'Duty_center: ', 'Duty_edge: '])
 
-        '''
-        window.outputMessage.append('[Time: ' + str(d_time) + ']\t' + '[Temp_1: ' + str(t_center) + ']\t' + '[Temp_2: ' + str(
-            t_edge) + ']\t' + '[Duty_center: ' + str(round(pwm_center, 3)) + ']\t' + '[Duty_edge: ' + str(round(pwm_edge, 3)) + "]")
 
-        window.outputMessage.update()
-        QCoreApplication.processEvents()
-        '''
-        '''
-        window.displayMessage('[Time: ' + str(d_time) + ']\t' + '[Temp_1: ' + str(window.process.t_center) + ']\t' + '[Temp_2: ' + str(
-            window.process.t_edge) + ']\t' + '[Duty_center: ' + str(round(window.process.pwm_center, 3)) + ']\t' + '[Duty_edge: ' + str(round(window.process.pwm_edge, 3)) + "]")
-        '''
         window.displayMessage('[Time: ' + str(d_time) + ']')
         window.outputMessage.setTextColor(QtGui.QColor(255, 0, 0))
         window.displayMessage('[Temp_1: ' + str(window.process.t_center) + ']   ' + '[Duty_center: ' + str(round(window.process.pwm_center, 3)) + ']')
