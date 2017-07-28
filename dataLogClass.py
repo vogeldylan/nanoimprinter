@@ -202,14 +202,13 @@ class dataLog:
 
         plt.plot(window.process.times, window.process.cent_temps, 'r', label = 'Center Temp')
         plt.plot(window.process.times, window.process.edge_temps, 'b', label = 'Edge Temp')
-        plt.plot(window.process.times, window.process.target_temps, 'g', label = 'Target Temp')
+        plt.plot(window.process.times, target_temps, 'g', label = 'Target Temp')
         plt.legend(loc='lower left', shadow = True)
         plt.ylabel('Temperature (°C)')
         plt.xlabel('Time From Start (s)')
         plt.title('Temperature Measurements Over Time ')
 
-
-
+    
         # saving the figure with a formatted name that includes information about the PID setup and the time and date
         fig_original.savefig(now.strftime("%I:%M%p - %B %d - %Y") + '-heater graph.pdf')
 

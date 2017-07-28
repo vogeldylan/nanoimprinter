@@ -290,7 +290,7 @@ class MainWindow(QtWidgets.QMainWindow):
             QCoreApplication.processEvents()
             '''
             self.generateMessageBox("REMINDER", "The process has finished. Please ENSURE that EVERYTHING has been TURNED OFF.")
-
+            
             self.process.dataLog.savePlot(self)
 
             self.process.dataLog.close()
